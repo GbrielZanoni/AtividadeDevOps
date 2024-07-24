@@ -1,3 +1,5 @@
+![Verificação Semântica](https://github.com/GbrielZanoni/AtividadeDevOps/actions/workflows/ci.yml/badge.svg)
+
 Atividade Prática: Configuração de um Pipeline de Integração
 
 Contínua com GitHub Actions
