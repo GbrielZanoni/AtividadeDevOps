@@ -27,14 +27,14 @@ jobs:
       - name: Instalar commitlint e ferramentas de linting
         run: npm install @commitlint/config-conventional @commitlint/cli husky eslint jest --save-dev
 
-      - name: Configurar commitlint
-        run: |
-          echo "module.exports = {extends: ['@commitlint/config-conventional']};" > commitlint.config.js
-
-      - name: Adicionar hook do husky
+      - name: Configurar husky
         run: |
           npx husky install
           npx husky add .husky/commit-msg "npx --no-install commitlint --edit $1"
+
+      - name: Configurar commitlint
+        run: |
+          echo "module.exports = {extends: ['@commitlint/config-conventional']};" > commitlint.config.js
 
       - name: Verificação de commitlint
         run: npx commitlint --from=HEAD~1 --to=HEAD
