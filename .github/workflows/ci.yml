@@ -1,4 +1,4 @@
-name: Verificação Semântica
+name: CI/CD Pipeline
 
 on:
   push:
@@ -9,26 +9,47 @@ on:
       - main
 
 jobs:
-  check:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout do código
-      uses: actions/checkout@v2
+      - name: Checkout do código
+        uses: actions/checkout@v2
 
-    - name: Configurar Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '14'
+      - name: Configurar Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
 
-    - name: Instalar commitlint
-      run: npm install @commitlint/config-conventional @commitlint/cli husky --save-dev
+      - name: Instalar dependências do projeto
+        run: npm install
 
-    - name: Configurar commitlint
-      run: echo "module.exports = {extends: ['@commitlint/config-conventional']};" > commitlint.config.js
+      - name: Instalar commitlint e ferramentas de linting
+        run: npm install @commitlint/config-conventional @commitlint/cli husky eslint jest --save-dev
 
-    - name: Adicionar hook do husky
-      run: npx husky install && npx husky add .husky/commit-msg "npx --no-install commitlint --edit $1"
+      - name: Configurar commitlint
+        run: |
+          echo "module.exports = {extends: ['@commitlint/config-conventional']};" > commitlint.config.js
 
-    - name: Verificação de commitlint
-      run: npx commitlint --from=HEAD~1 --to=HEAD
+      - name: Adicionar hook do husky
+        run: |
+          npx husky install
+          npx husky add .husky/commit-msg "npx --no-install commitlint --edit $1"
+
+      - name: Verificação de commitlint
+        run: npx commitlint --from=HEAD~1 --to=HEAD
+
+      - name: Rodar ESLint
+        run: npx eslint .
+
+      - name: Rodar testes com Jest
+        run: npx jest
+
+      - name: Construir o projeto
+        run: npm run build
+
+      - name: Implantar no GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build # ajuste para o diretório de build do seu projeto
