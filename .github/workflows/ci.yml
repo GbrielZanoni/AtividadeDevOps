@@ -26,16 +26,10 @@ jobs:
           cd app
           npm install
 
-      - name: Instalar commitlint e ferramentas de linting
-        run: |
-          cd app
-          npm install @commitlint/config-conventional @commitlint/cli husky eslint jest --save-dev
-
       - name: Configurar husky
         run: |
           cd app
-          npx husky install
-          npx husky add .husky/commit-msg "npx --no-install commitlint --edit $1"
+          npm run prepare
 
       - name: Configurar commitlint
         run: |
@@ -50,12 +44,12 @@ jobs:
       - name: Rodar ESLint
         run: |
           cd app
-          npx eslint .
+          npm run lint
 
       - name: Rodar testes com Jest
         run: |
           cd app
-          npx jest
+          npm test
 
       - name: Construir o projeto
         run: |
