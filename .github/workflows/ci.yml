@@ -39,7 +39,7 @@ jobs:
       - name: Verificação de commitlint
         run: |
           cd app
-          git log -1 --pretty=%B | npx commitlint
+          git log -1 --pretty=%B | npx commitlint --config ./commitlint.config.js
 
       - name: Rodar ESLint
         run: |
