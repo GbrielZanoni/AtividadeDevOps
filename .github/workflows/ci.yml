@@ -22,34 +22,48 @@ jobs:
           node-version: '16'  # Use Node.js versão 16 ou mais recente
 
       - name: Instalar dependências do projeto
-        run: npm install
+        run: |
+          cd app
+          npm install
 
       - name: Instalar commitlint e ferramentas de linting
-        run: npm install @commitlint/config-conventional @commitlint/cli husky eslint jest --save-dev
+        run: |
+          cd app
+          npm install @commitlint/config-conventional @commitlint/cli husky eslint jest --save-dev
 
       - name: Configurar husky
         run: |
+          cd app
           npx husky install
           npx husky add .husky/commit-msg "npx --no-install commitlint --edit $1"
 
       - name: Configurar commitlint
         run: |
+          cd app
           echo "module.exports = {extends: ['@commitlint/config-conventional']};" > commitlint.config.js
 
       - name: Verificação de commitlint
-        run: npx commitlint --from=HEAD~1 --to=HEAD
+        run: |
+          cd app
+          npx commitlint --from=HEAD~1 --to=HEAD
 
       - name: Rodar ESLint
-        run: npx eslint .
+        run: |
+          cd app
+          npx eslint .
 
       - name: Rodar testes com Jest
-        run: npx jest
+        run: |
+          cd app
+          npx jest
 
       - name: Construir o projeto
-        run: npm run build
+        run: |
+          cd app
+          npm run build
 
       - name: Implantar no GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build # ajuste para o diretório de build do seu projeto
+          publish_dir: ./app/build # ajuste para o diretório de build do seu projeto
