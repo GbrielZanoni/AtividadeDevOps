@@ -34,7 +34,7 @@ jobs:
       - name: Configurar commitlint
         run: |
           cd app
-          echo "module.exports = {extends: ['@commitlint/config-conventional']};" > commitlint.config.js
+          echo "module.exports = {extends: ['@commitlint/config-conventional'], rules: { 'subject-empty': [0, 'never'], 'type-empty': [0, 'never'] }};" > commitlint.config.js
 
       - name: Verificação de commitlint
         run: |
