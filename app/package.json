@@ -4,10 +4,10 @@
   "description": "Projeto de exemplo para configuração de CI/CD com GitHub Actions",
   "main": "index.js",
   "scripts": {
-    "prepare": "husky install",
+    "prepare": "cd .. && husky install app/.husky",
     "lint": "eslint .",
     "test": "jest",
-    "build": "echo 'Build step'"
+    "build": "echo 'Build step - ajuste para seu projeto'"
   },
   "repository": {
     "type": "git",
@@ -18,7 +18,7 @@
     "cd",
     "github-actions"
   ],
-  "author": "Gabriel Zanoni",
+  "author": "Seu Nome",
   "license": "MIT",
   "devDependencies": {
     "@commitlint/cli": "^12.1.4",
